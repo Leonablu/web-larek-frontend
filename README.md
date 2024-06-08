@@ -237,7 +237,112 @@ yarn build
 - События: Используются для взаимодействия между различными частями приложения. Например, событие PRODUCT_ADDED вызывается при добавлении продукта в корзину.
 - Promise-based flow: Используется для взаимодействия с API. Например, методы getProducts и createOrder возвращают промисы, которые разрешаются при успешном выполнении запросов к API.
 
+## Основные типы/интерфейсы проекта
 
+1. Product:
+`export interface Product {
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: string;
+  price: number;
+}`
+
+2. ProductList:
+`export interface ProductList {
+  total: number;
+  items: Product[];
+}`
+
+3. Order:
+`export interface Order {
+  id: string;
+  total: number;
+}`
+
+4. PaymentForm:
+`export interface PaymentForm {
+  onlinePayment: boolean;
+  deliveryAddress: string;
+}`
+
+5. ContactForm:
+`export interface ContactForm {
+  email: string;
+  phoneNumber: string;
+}`
+
+6. DisplayProduct:
+`export interface DisplayProduct {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  price: string;
+}`
+
+7. DisplayOrder:
+`export interface DisplayOrder {
+  id: string;
+  total: string;
+}`
+
+8. CartItem:
+`export interface CartItem {
+  product: DisplayProduct;
+  quantity: number;
+}`
+
+9. DisplayCart:
+`export interface DisplayCart {
+  items: CartItem[];
+  total: string;
+}`
+
+10. MainPage:
+`export interface MainPage {
+  products: DisplayProduct[];
+  cart: DisplayCart;
+  contactForm: ContactForm;
+}`
+
+11. SuccessPurchase:
+`export interface SuccessPurchase {
+  message: string;
+  orderId: string;
+}`
+
+12. APIClientInterface:
+`export interface APIClientInterface {
+  getProducts(): Promise<Product[]>;
+  createOrder(products: Product[]): Promise<Order>;
+}`
+
+13. CartServiceInterface:
+`export interface CartServiceInterface {
+  addToCart(product: Product): void;
+  removeFromCart(productId: string): void;
+  getCartItems(): Product[];
+  clearCart(): void;
+}`
+
+14. Events:
+`export enum Events {
+  PRODUCT_ADDED = "product_added",
+  ORDER_PLACED = "order_placed"
+}`
+
+15. ProductAddedEvent:
+`export interface ProductAddedEvent {
+  productId: string;
+}`
+
+16. OrderPlacedEvent:
+`export interface OrderPlacedEvent {
+  orderId: string;
+  orderTotal: number;
+}`
 
 
 
