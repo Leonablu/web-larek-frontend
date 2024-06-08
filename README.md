@@ -111,15 +111,15 @@ yarn build
 Типы данных и их функции
 
 - Product:
-«`{typescript} export interface Product {
+`export interface Product {
   id: string;
   description: string;
   image: string;
   title: string;
   category: string;
   price: number;
-}«`
-
+}`
+Описывает структуру данных для отдельного продукта.
 
 
 
