@@ -258,7 +258,7 @@ Service:
 - `setTextContent(selector: string, text: string): void` - Метод для установки текстовых данных.
 
 Код: 
-`class Component {
+`export class Component {
   protected element: HTMLElement;
 
   constructor(element: HTMLElement) {

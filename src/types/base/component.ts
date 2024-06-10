@@ -1,5 +1,5 @@
 // Базовый класс для управления DOM-элементами
-class Component {
+export class Component {
   protected element: HTMLElement;
 
   constructor(element: HTMLElement) {
