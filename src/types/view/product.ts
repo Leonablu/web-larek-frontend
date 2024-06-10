@@ -6,3 +6,13 @@ export interface DisplayProduct {
   image: string;
   price: string;
 }
+// Тип настроек для отображения продукта
+export interface DisplayProductSetting {
+  category: string;
+  price: string;
+  title: string;
+  image: string;
+  description: string;
+  compactClass: string;
+  isCompact: boolean;
+}

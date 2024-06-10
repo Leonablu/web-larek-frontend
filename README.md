@@ -21,12 +21,14 @@ https://github.com/Leonablu/web-larek-frontend.git
     - сart.ts - Тип данных для корзины
     - mainPage.ts - Тип данных для интерфейса
     - successPurchase - Тип данных для модального окна об успешной покупке
-  - src/controller/ — контроллер
+  - src/types/controller/ — контроллер
     - apiClients.ts — Интерфейсы для API-клиентов
-    - cart.ts — Интерфейсы для сервиса работы с корзиной
+    - Basket.ts — Интерфейсы для сервиса работы с корзиной
     - events.ts — Перечисления и интерфейсы для событий
+    - src/types/base/ — модели данных
+    - component.ts - базовый класс для управления DOM-элементами
 - src/index.ts — точка входа приложения
-- src/styles/styles.scss — корневой файл стилей
+- src/scss/styles.scss — корневой файл стилей
 - src/utils/constants.ts — файл с константами
 - src/utils/utils.ts — файл с утилитами
 
@@ -127,23 +129,23 @@ yarn build
   - `id: string` - Идентификатор заказа.
   - `total: string` - Общая сумма заказа.
 
-3. CartItem:
+3. Basket Item:
 - Описывает тип данных для элемента в корзине.
 - Свойства:
   - `product: DisplayProduct` - Продукт в корзине.
   - `quantity: number` - Количество продукта.
 
-4. DisplayCart:
+4. DisplayBasket:
 - Описывает тип данных для отображения корзины.
 - Свойства:
-  - `tems: CartItem[]` - Массив элементов в корзине.
+  - `items: BasketItem[]` - Массив элементов в корзине.
   - `total: string` - Общая сумма корзины.
 
 5. MainPage:
 - Описывает тип данных для главной страницы.
 - Свойства:
   - `products: DisplayProduct[]` - Массив продуктов.
-  - `cart: DisplayCart` - Корзина.
+  - `basket: DisplayBasket` - Корзина.
   - `contactForm: ContactForm` - Форма контактной информации.
 
 6. SuccessPurchase:
@@ -161,13 +163,13 @@ yarn build
   - `getProducts(): Promise<Product[]>` - Получение списка продуктов.
   - `createOrder(products: Product[]): Promise<Order>` - Создание заказа.
 
-2. CartServiceInterface:
+2. BasketServiceInterface:
 - Интерфейс для работы с корзиной.
 - Методы:
-  - `addToCart(product: Product): void` - Добавление продукта в корзину.
-  - `removeFromCart(productId: string): void` - Удаление продукта из корзины.
-  - `getCartItems(): Product[]` - Получение продуктов в корзине.
-  - `clearCart(): void` - Очистка корзины.
+  - `addToBasket(product: Product): void` - Добавление продукта в корзину.
+  - `removeFromBasket(productId: string): void` - Удаление продукта из корзины.
+  - `getBasketItems(): Product[]` - Получение продуктов в корзине.
+  - `clearBasket(): void` - Очистка корзины.
 
 3. Events:
 - Перечисление событий.
@@ -202,21 +204,22 @@ yarn build
   - getProducts: `Promise<Product[]>` - Получение списка продуктов..
   - createOrder: `Promise<Order>` - Создает заказ на основе переданных продуктов.
 
-2. CartService:
+2. Basket
+Service:
 - Управляет добавлением, удалением и очисткой продуктов в корзине.
 - Конструктор:
-  - `cart: CartItem[]` - Массив элементов в корзине.
+  - `Basket: BasketItem[]` - Массив элементов в корзине.
 - Методы:
-  - `addToCart(product: Product): void` - Добавление продукта в корзину.
-  - `removeFromCart(productId: string): void` - Удаление продукта из корзины.
-  - `getCartItems(): Product[]` - Получение продуктов в корзине.
-  - `clearCart(): void` - Очистка корзины.
+  - `addToBasket(product: Product): void` - Добавление продукта в корзину.
+  - `removeFromBasket(productId: string): void` - Удаление продукта из корзины.
+  - `getBasketItems(): Product[]` - Получение продуктов в корзине.
+  - `clearBasket(): void` - Очистка корзины.
 
 3. MainPage:
 - Отображает главную страницу с продуктами, корзиной и формой контактной информации.
 - Конструктор:
   - `products: DisplayProduct[]` - Массив продуктов.
-  - `cart: DisplayCart` - Корзина.
+  - `Basket: DisplayBasket` - Корзина.
   - `contactForm: ContactForm` - Форма контактной информации.
 - Методы:
   - `render(): void` - Отображение главной страницы.
@@ -236,6 +239,47 @@ yarn build
 
 - События: Используются для взаимодействия между различными частями приложения. Например, событие PRODUCT_ADDED вызывается при добавлении продукта в корзину.
 - Promise-based flow: Используется для взаимодействия с API. Например, методы getProducts и createOrder возвращают промисы, которые разрешаются при успешном выполнении запросов к API.
+
+## Базовый класс для управления DOM-элементами
+
+### Component
+
+Базовый класс для управления DOM-элементами.
+
+Конструктор:
+- `element: HTMLElement` - DOM-элемент, с которым будет работать компонент.
+
+Свойства:
+- `protected element: HTMLElement` - DOM-элемент, с которым работает компонент.
+
+Методы:
+- `toggleClass(className: string): void` - Метод для переключения CSS-классов.
+- `setButtonState(button: HTMLButtonElement, isActive: boolean): void` - Метод для активации/деактивации кнопок.
+- `setTextContent(selector: string, text: string): void` - Метод для установки текстовых данных.
+
+Код: 
+`class Component {
+  protected element: HTMLElement;
+
+  constructor(element: HTMLElement) {
+    this.element = element;
+  }
+
+  toggleClass(className: string) {
+    this.element.classList.toggle(className);
+  }
+
+  setButtonState(button: HTMLButtonElement, isActive: boolean) {
+    button.disabled = !isActive;
+  }
+
+  setTextContent(selector: string, text: string) {
+    const element = this.element.querySelector(selector);
+    if (element) {
+      element.textContent = text;
+    }
+  }
+}`
 
 ## Основные типы/интерфейсы проекта
 
@@ -288,22 +332,23 @@ yarn build
   total: string;
 }`
 
-8. CartItem:
-`export interface CartItem {
+8. BasketItem:
+`export interface BasketItem {
   product: DisplayProduct;
   quantity: number;
 }`
 
-9. DisplayCart:
-`export interface DisplayCart {
-  items: CartItem[];
+9. DisplayBasket:
+`export interface DisplayBasket
+ {
+  items: BasketItem[];
   total: string;
 }`
 
 10. MainPage:
 `export interface MainPage {
   products: DisplayProduct[];
-  cart: DisplayCart;
+  Basket: DisplayBasket;
   contactForm: ContactForm;
 }`
 
@@ -319,12 +364,12 @@ yarn build
   createOrder(products: Product[]): Promise<Order>;
 }`
 
-13. CartServiceInterface:
-`export interface CartServiceInterface {
-  addToCart(product: Product): void;
-  removeFromCart(productId: string): void;
-  getCartItems(): Product[];
-  clearCart(): void;
+13. BasketServiceInterface:
+`export interface BasketServiceInterface {
+  addToBasket(product: Product): void;
+  removeFromBasket(productId: string): void;
+  getBasketItems(): Product[];
+  clearBasket(): void;
 }`
 
 14. Events:
@@ -343,9 +388,6 @@ yarn build
   orderId: string;
   orderTotal: number;
 }`
-
-
-
 
 
 
