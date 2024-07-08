@@ -14,16 +14,19 @@ https://github.com/Leonablu/web-larek-frontend.git
   - src/types/models/ — модели данных
     - product.ts — Тип данных для отдельного продукта и списка продуктов
     - order.ts — Тип данных для заказа
-    - forms.ts — Тип данных для форм
+    - payForms.ts — Тип данных для форм оплаты
+    - contactsForms.ts — Тип данных для форм контактов
   - src/types/view/ — типы данных для отображения
     - product.ts — Тип данных для отображения продукта
     - order.ts — Тип данных для отображения заказа
-    - сart.ts - Тип данных для корзины
+    - basket.ts - Тип данных для корзины
     - mainPage.ts - Тип данных для интерфейса
     - successPurchase - Тип данных для модального окна об успешной покупке
+    - payForms.ts — Тип данных для модального окна форм оплаты
+    - contactsForms.ts — Тип данных для модального окна форм контактов
   - src/types/controller/ — контроллер
     - apiClients.ts — Интерфейсы для API-клиентов
-    - Basket.ts — Интерфейсы для сервиса работы с корзиной
+    - basket.ts — Интерфейсы для сервиса работы с корзиной
     - events.ts — Перечисления и интерфейсы для событий
     - src/types/base/ — модели данных
     - component.ts - базовый класс для управления DOM-элементами
@@ -252,34 +255,65 @@ Service:
 Свойства:
 - `protected element: HTMLElement` - DOM-элемент, с которым работает компонент.
 
-Методы:
-- `toggleClass(className: string): void` - Метод для переключения CSS-классов.
-- `setButtonState(button: HTMLButtonElement, isActive: boolean): void` - Метод для активации/деактивации кнопок.
-- `setTextContent(selector: string, text: string): void` - Метод для установки текстовых данных.
-
 Код: 
-`export class Component {
-  protected element: HTMLElement;
+`
+/**
+ * Базовый компонент
+ */
+export abstract class Component<T> {
+	protected constructor(protected readonly container: HTMLElement) {
+		// Учитывайте что код в конструкторе исполняется ДО всех объявлений в дочернем классе
+	}
 
-  constructor(element: HTMLElement) {
-    this.element = element;
-  }
+	// Инструментарий для работы с DOM в дочерних компонентах
 
-  toggleClass(className: string) {
-    this.element.classList.toggle(className);
-  }
+	// Переключить класс
+	toggleClass(element: HTMLElement, className: string, force?: boolean) {
+		element.classList.toggle(className, force);
+	}
 
-  setButtonState(button: HTMLButtonElement, isActive: boolean) {
-    button.disabled = !isActive;
-  }
+	// Установить текстовое содержимое
+	protected setText(element: HTMLElement, value: unknown) {
+		if (element) {
+			element.textContent = String(value);
+		}
+	}
 
-  setTextContent(selector: string, text: string) {
-    const element = this.element.querySelector(selector);
-    if (element) {
-      element.textContent = text;
-    }
-  }
-}`
+	// Сменить статус блокировки
+	setDisabled(element: HTMLElement, state: boolean) {
+		if (element) {
+			if (state) element.setAttribute('disabled', 'disabled');
+			else element.removeAttribute('disabled');
+		}
+	}
+
+	// Скрыть
+	protected setHidden(element: HTMLElement) {
+		element.style.display = 'none';
+	}
+
+	// Показать
+	protected setVisible(element: HTMLElement) {
+		element.style.removeProperty('display');
+	}
+
+	// Установить изображение с алтернативным текстом
+	protected setImage(element: HTMLImageElement, src: string, alt?: string) {
+		if (element) {
+			element.src = src;
+			if (alt) {
+				element.alt = alt;
+			}
+		}
+	}
+
+	// Вернуть корневой DOM-элемент
+	render(data?: Partial<T>): HTMLElement {
+		Object.assign(this as object, data ?? {});
+		return this.container;
+	}
+}
+`
 
 ## Основные типы/интерфейсы проекта
 
