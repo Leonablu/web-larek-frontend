@@ -7,6 +7,7 @@ export class SuccessPurchaseComponent extends ComponentWithModal<SuccessPurchase
 	private orderIdElement: HTMLElement;
 	private closeButton: HTMLButtonElement;
 
+	// Инициализация элементов интерфейса
 	constructor(container: HTMLElement) {
 		const modalElement = document.querySelector(
 			'#success-purchase-modal'
