@@ -1,6 +1,6 @@
-import { Product } from '../models/product';
-import { Order } from '../models/order';
-import { Api, ApiListResponse } from '../../components/base/api';
+import { Product } from '../types/models/product';
+import { Order } from '../types/models/order';
+import { Api, ApiListResponse } from './base/api';
 
 // Интерфейс API-клиента
 export interface IProductAPI {

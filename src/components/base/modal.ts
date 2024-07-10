@@ -1,37 +1,49 @@
-// Функция закрытия модального окна через Escape
-function handleEscClose(event: KeyboardEvent) {
-	if (event.key === 'Escape') {
-		const openedModal = document.querySelector(
-			'.modal_active'
-		) as HTMLElement | null;
-		if (openedModal) {
-			closeModal(openedModal);
+export class Modal {
+	private modalElement: HTMLElement;
+	private isOpen: boolean;
+
+	constructor(modalElement: HTMLElement) {
+		this.modalElement = modalElement;
+		this.isOpen = false;
+
+		this.init();
+	}
+
+	private init() {
+		this.modalElement.addEventListener(
+			'click',
+			this.onModalOverlayClick.bind(this)
+		);
+	}
+
+	private toggleModal(state = true) {
+		this.modalElement.classList.toggle('modal_active', state);
+		this.isOpen = state;
+	}
+
+	private handleEscape = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			this.close();
+		}
+	};
+
+	private onModalOverlayClick(event: MouseEvent) {
+		if (event.target === this.modalElement) {
+			this.close();
 		}
 	}
-}
 
-// Функция закрытия модального окна через клик по оверлею
-function onModalOverlayClick(event: MouseEvent) {
-	const target = event.target as HTMLElement;
-	if (target.classList.contains('modal_active')) {
-		closeModal(target);
+	public open() {
+		this.toggleModal(true);
+		document.addEventListener('keydown', this.handleEscape);
 	}
-}
 
-// Функция открытия модального окна
-export function openModal(modalElement: HTMLElement | null) {
-	if (modalElement != null) {
-		modalElement.classList.add('modal_active');
-		document.addEventListener('keydown', handleEscClose);
-		modalElement.addEventListener('mousedown', onModalOverlayClick);
+	public close() {
+		this.toggleModal(false);
+		document.removeEventListener('keydown', this.handleEscape);
 	}
-}
 
-// Функция закрытия модального окна
-export function closeModal(modalElement: HTMLElement | null) {
-	if (modalElement != null) {
-		modalElement.classList.remove('modal_active');
-		document.removeEventListener('keydown', handleEscClose);
-		modalElement.removeEventListener('mousedown', onModalOverlayClick);
+	public getElement(): HTMLElement {
+		return this.modalElement;
 	}
 }
