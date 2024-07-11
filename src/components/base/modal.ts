@@ -1,8 +1,11 @@
-export class Modal {
+import { Component } from './component';
+
+export class Modal extends Component<any> {
 	private modalElement: HTMLElement;
 	private isOpen: boolean;
 
 	constructor(modalElement: HTMLElement) {
+		super(modalElement);
 		this.modalElement = modalElement;
 		this.isOpen = false;
 
@@ -17,7 +20,7 @@ export class Modal {
 	}
 
 	private toggleModal(state = true) {
-		this.modalElement.classList.toggle('modal_active', state);
+		this.toggleClass(this.modalElement, 'modal_active', state);
 		this.isOpen = state;
 	}
 

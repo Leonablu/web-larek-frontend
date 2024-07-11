@@ -111,8 +111,10 @@ export class BasketComponent extends ComponentWithModal<DisplayBasket> {
 				BasketComponent.exampleBasketData.items
 			);
 			this.setBasketData(BasketComponent.exampleBasketData);
-			this.basketCounter.textContent =
-				BasketComponent.exampleBasketData.items.length.toString();
+			this.setText(
+				this.basketCounter,
+				BasketComponent.exampleBasketData.items.length.toString()
+			);
 		}
 	}
 
@@ -176,8 +178,9 @@ export class BasketComponent extends ComponentWithModal<DisplayBasket> {
 		this.updateTotalPrice(data.total);
 		this.toggleButton(data.items.length === 0);
 
-		this.basketCounter.textContent = data.items.length.toString();
+		this.setText(this.basketCounter, data.items.length.toString());
 	}
+
 	// Удаление товара из корзины
 	private removeItem(index: number) {
 		if (index >= 0 && index < BasketComponent.exampleBasketData.items.length) {
@@ -186,8 +189,10 @@ export class BasketComponent extends ComponentWithModal<DisplayBasket> {
 				BasketComponent.exampleBasketData.items
 			);
 			this.setBasketData(BasketComponent.exampleBasketData);
-			this.basketCounter.textContent =
-				BasketComponent.exampleBasketData.items.length.toString();
+			this.setText(
+				this.basketCounter,
+				BasketComponent.exampleBasketData.items.length.toString()
+			);
 		}
 	}
 
@@ -206,7 +211,9 @@ export class BasketComponent extends ComponentWithModal<DisplayBasket> {
 		BasketComponent.exampleBasketData.total = '0 синапсов';
 
 		this.setBasketData(BasketComponent.exampleBasketData);
-		this.basketCounter.textContent =
-			BasketComponent.exampleBasketData.items.length.toString();
+		this.setText(
+			this.basketCounter,
+			BasketComponent.exampleBasketData.items.length.toString()
+		);
 	}
 }

@@ -180,24 +180,25 @@ export class ProductListComponent extends ComponentWithModal<DisplayProductSetti
 
 	// Метод добавления обработчика закрытия модального окна
 	addModalCloseListener(modalElement: HTMLElement) {
+		const closeModal = () => {
+			this.closeModal();
+			modalElement.querySelector('.modal__content')!.innerHTML = '';
+			modalElement.removeEventListener('click', closeModalEvent);
+			document.removeEventListener('keydown', closeOnEscape);
+		};
+
 		const closeModalEvent = (event: Event) => {
 			if (
 				event.target === modalElement ||
 				(event.target as HTMLElement).classList.contains('modal__close')
 			) {
-				this.closeModal(); // Закрываем модальное окно
-				modalElement.querySelector('.modal__content')!.innerHTML = ''; // Очищаем контент модального окна
-				modalElement.removeEventListener('click', closeModalEvent); // Удаляем обработчик после закрытия
-				document.removeEventListener('keydown', closeOnEscape); // Удаляем обработчик для Escape
+				closeModal();
 			}
 		};
 
 		const closeOnEscape = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
-				this.closeModal(); // Закрываем модальное окно
-				modalElement.querySelector('.modal__content')!.innerHTML = ''; // Очищаем контент модального окна
-				document.removeEventListener('keydown', closeOnEscape); // Удаляем обработчик после закрытия
-				modalElement.removeEventListener('click', closeModalEvent); // Удаляем обработчик для клика
+				closeModal();
 			}
 		};
 
